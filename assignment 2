@@ -1,0 +1,208 @@
+PART A –  SOLUTIONS
+
+Theory :
+Python supports OOP but is flexible because:
+No strict data types, no access modifiers like Java/C++.
+Inheritance, abstraction, encapsulation work without rigid rules.
+Methods/attributes can be added or modified at runtime.
+Polymorphism works automatically without method overloading rules.
+
+Code :
+
+class Person:
+    def __init__(self, name):
+        self._name = name      # encapsulation (protected)
+
+class Student(Person):         # inheritance
+    def show(self):
+        print("Student:", self._name)
+
+s = Student("Alisha")
+s.show()
+
+2. Ride-Sharing Polymorphism (Short Code)
+class Vehicle:
+    def calculate_fare(self, km): pass
+
+class Auto(Vehicle):
+    def calculate_fare(self, km): return km * 10
+
+class Bike(Vehicle):
+    def calculate_fare(self, km): return km * 8
+
+class Sedan(Vehicle):
+    def calculate_fare(self, km): return km * 15
+
+for v in [Auto(), Bike(), Sedan()]:
+    print(v.calculate_fare(5))
+
+3. Hospital Staff Inheritance (Short Code)
+class Staff:
+    def __init__(self, name): self.name = name
+
+class Doctor(Staff):
+    def role(self): print(self.name, "treats patients")
+
+class Nurse(Staff):
+    def role(self): print(self.name, "cares for patients")
+
+class Technician(Staff):
+    def role(self): print(self.name, "handles lab tests")
+
+Doctor("A").role()
+
+4. Banking Encapsulation (Short Code + Short Theory)
+
+Theory (short):
+Encapsulation hides balance/PIN using private variables and gives access only through getter/setter.
+
+Code:
+
+class Account:
+    def __init__(self):
+        self.__balance = 1000
+
+    def get_balance(self):
+        return self.__balance
+
+    def deposit(self, amt):
+        self.__balance += amt
+
+a = Account()
+a.deposit(500)
+print(a.get_balance())
+
+5. University Marks Encapsulation (Short Theory + Code)
+
+Theory:
+Encapsulation hides internal marks/record so nobody can modify them directly.
+
+class Student:
+    def __init__(self):
+        self.__internal = 28
+
+    def get_marks(self): return self.__internal
+
+6. Payment Abstraction (Short Theory + Code)
+
+Theory:
+Abstraction hides internal logic (encryption/API). User only uses a simple pay() method.
+
+from abc import ABC, abstractmethod
+
+class Pay(ABC):
+    @abstractmethod
+    def do_payment(self): pass
+
+class UPI(Pay):
+    def do_payment(self): print("Paid via UPI")
+
+class Card(Pay):
+    def do_payment(self): print("Paid via Card")
+
+PayObj = UPI()
+PayObj.do_payment()
+
+PART B –  ANSWERS
+A. 
+import seaborn as sns
+import matplotlib.pyplot as plt
+df = sns.load_dataset("tips")
+
+df["total_bill"].hist()
+plt.show()
+
+sns.boxplot(df["total_bill"])
+plt.show()
+
+sns.heatmap(df.corr(), annot=True)
+plt.show()
+
+
+Insights (short):
+
+Bills mostly lie in low range; few high values.
+
+Boxplot shows clear outliers.
+
+Tip increases with bill amount.
+
+Why visual helps:
+Graphs show patterns instantly; tables require more reading and comparison.
+
+B. Fitness App Analysis 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+ "Age":[20,30,25],
+ "Gender":["M","F","M"],
+ "Steps":[5000,7000,4000],
+ "Sleep":[6,8,5],
+ "BMI":[22,27,30],
+ "Workout":[30,45,20]
+})
+
+df.fillna(df.mean(), inplace=True)
+print(df[["Workout","BMI","Sleep"]].corr())
+
+df["Steps"].plot()
+plt.show()
+
+df["BMI"].plot(kind="bar")
+plt.show()
+
+
+Insights:
+
+More workout → better BMI.
+
+Better sleep improves activity.
+
+Low steps + high BMI → requires intervention.
+
+PART C 
+A. 
+df.isnull().sum()
+df.fillna(df.mean(), inplace=True)
+sns.boxplot(df["col"])
+from scipy import stats
+z = stats.zscore(df["col"])
+df.describe()
+df.hist(); plt.show()
+sns.boxplot(df); plt.show()
+sns.heatmap(df.corr()); plt.show()
+
+Dataset shows missing values but after cleaning data is stable.
+Boxplot shows few extreme outliers that affect mean.
+Strong positive correlations found between key variables.
+Distribution is right skewed, suggesting uneven spread.
+Users with high values show different behavior patterns.
+Insights help in prediction and decision making.
+
+B. Outlier Detection (Short Theory + Code)
+z = (df["amt"] - df["amt"].mean()) / df["amt"].std()
+out_z = df[z>3]
+
+Q1, Q3 = df["amt"].quantile([0.25,0.75])
+IQR = Q3 - Q1
+out_iqr = df[(df["amt"] < Q1-1.5*IQR) | (df["amt"] > Q3+1.5*IQR)]
+
+Correction (median replacement)
+med = df["amt"].median()
+df.loc[out_iqr.index,"amt"] = med
+
+Short theory explanations
+
+Z-score catches extreme values in normal distribution.
+
+IQR works well for skewed data.
+
+Both may detect different outliers because assumptions differ.
+
+Don't delete outliers—they may indicate fraud or important events.
+
+Remove outliers only if they are wrong; replace if meaningful.
+
+Visualization sometimes reveals patterns numbers cannot show.
