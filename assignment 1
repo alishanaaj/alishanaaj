@@ -1,0 +1,162 @@
+question 1:
+Personal Finance Tracker 
+Logic:
+Take income as input
+Take multiple expenses (store in list)
+Calculate total expenses, savings, percentage
+Categorize spending:
+LOW (<30%), MODERATE (30–60%), HIGH (>60%)
+Use try–except for exception handling
+
+ Code:
+
+try:
+    income = float(input("Income: "))
+    expenses = []
+    for i in range(3):
+        expenses.append(float(input("Expense: ")))
+
+    total = sum(expenses)
+    savings = income - total
+    percent = (total / income) * 100
+
+    if percent < 30:
+        msg = "Good control!"
+    elif percent <= 60:
+        msg = "Be careful!"
+    else:
+        msg = "Financial Risk!"
+
+    print("Total:", total, "Savings:", savings, "Spent%:", percent, msg)
+
+except Exception as e:
+    print("Error:", e)
+
+Question 2:
+Regex Concepts – Very Short Notes
+Metacharacters (Short Use Cases)
+
+. → matches any character
+
+"a.c" → matches abc, arc
+
+^ → starts with
+
+^Hello → string starting with Hello
+
+$ → ends with
+
+end$ → string ending with "end"
+
+[] → character set
+
+[abc] → matches a or b or c
+
+() → grouping
+
+(abc)+
+
+| → OR
+
+cat|dog
+
+Quantifiers
+
+* → 0 or more
+
+a* matches "", "a", "aaa"
+
++ → 1 or more
+
+a+ matches "a", "aa"
+
+? → 0 or 1
+
+a? matches "" or "a"
+
+{m,n} → between m and n times
+
+a{2,4} → "aa", "aaa", "aaaa"
+
+Regex Patterns
+
+Indian Mobile: ^[6-9]\d{9}$
+
+PAN: ^[A-Z]{5}\d{4}[A-Z]$
+
+Aadhaar: ^\d{4}\d{4}\d{4}$
+
+PIN Code: ^\d{6}$
+
+URL: https?://[A-Za-z0-9./_-]+
+
+IPv4: ^(\d{1,3}\.){3}\d{1,3}$
+
+Strong Password: ^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$]).{8,}$
+
+Question 3:
+
+def add_record():
+    with open("vaccine.txt", "a") as f:
+        name = input("Name: ")
+        age = input("Age: ")
+        dose = input("Dose: ")
+        f.write(f"{name:10} {age:5} {dose:5}\n")
+
+def show_records():
+    with open("vaccine.txt", "r") as f:
+        print(f.read())
+Why persistent storage is needed:
+
+Data must be stored permanently for future use.
+
+Records should not disappear when program closes.
+
+Real systems use files/databases to keep secure, long-term data.
+
+Question 4:
+
+import re
+
+books = {}
+ids = set()
+
+def add():
+    bid = input("ID: ")
+    if bid in ids:
+        print("Duplicate!")
+        return
+    ids.add(bid)
+    name = input("Name: ")
+    author = input("Author: ")
+    cat = input("Category: ")
+    books[bid] = {"name": name, "author": author, "cat": cat}
+
+def search():
+    key = input("Keyword: ")
+    for b in books.values():
+        if re.search(key, b["name"], re.I):
+            print(b)
+
+def update_delete():
+    bid = input("ID: ")
+    if bid in books:
+        op = input("U/D: ")
+        if op == "U":
+            books[bid]["name"] = input("New Name: ")
+        else:
+            del books[bid]
+
+def save():
+    with open("library.txt", "w") as f:
+        for k,v in books.items():
+            f.write(str(k)+":"+str(v)+"\n")
+
+How multiple data structures work together :
+
+List stores multiple book entries.
+Dictionary stores details of each book (key–value).
+Set prevents duplicate IDs
+File stores records permanently.
+Regex helps in flexible keyword searching.
+
